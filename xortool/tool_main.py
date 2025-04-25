@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import string
+import sys
 from operator import itemgetter
 from typing import Annotated, Optional
 
@@ -10,7 +11,7 @@ from rich.style import Style
 
 from xortool import __version__
 from xortool.args import ArgError
-from xortool.charset import CharsetError
+from xortool.charset import CharsetError, get_charset
 from xortool.routine import (
     MkdirError,
     decode_from_hex,
@@ -179,10 +180,10 @@ def print_keys(keys):
         console.print("...")
 
 
-def percentage_valid(text):
+def percentage_valid(text: bytes):
     x = 0.0
     for c in text:
-        if chr(c) in PARAMETERS["text_charset"]:
+        if c in PARAMETERS["text_charset"]:
             x += 1
     return x / len(text)
 
@@ -273,8 +274,25 @@ def cli_main(
         ),
     ] = False,
     text_charset: Annotated[
-        str, typer.Option("--text-charset", "-t", help="Target text character set")
-    ] = string.printable,
+        Optional[str],
+        typer.Option(
+            "--text-charset",
+            "-t",
+            help="""Target text character set
+
+- Custom sets:
+
+  - a: lowercase chars
+
+  - A: uppercase chars
+
+  - 1: digits
+
+  - !: special chars
+
+  - *: printable chars""",
+        ),
+    ] = None,
     known_plain: Annotated[
         Optional[str],
         typer.Option(
@@ -307,7 +325,7 @@ def cli_main(
     PARAMETERS["brute_chars"] = brute_chars
     PARAMETERS["brute_printable"] = brute_printable
     PARAMETERS["filter_output"] = filter_output
-    PARAMETERS["text_charset"] = text_charset
+    PARAMETERS["text_charset"] = get_charset(text_charset)
     PARAMETERS["known_plain"] = known_plain.encode() if known_plain else None
 
     try:
@@ -334,7 +352,7 @@ def cli_main(
 
         print_keys(probable_keys)
         produce_plaintexts(ciphertext, probable_keys, key_char_used)
-
+    # [TODO]
     except AnalysisError as err:
         console.print(f"[ERROR] Analysis error:\n\t{err}", style=STYLE_FATAL)
     except ArgError as err:
@@ -386,4 +404,6 @@ def calculate_fitness_sum(fitnesses):
 
 
 def main():
+    if len(sys.argv) == 1:
+        sys.argv.append("--help")
     typer.run(cli_main)

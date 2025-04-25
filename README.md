@@ -5,7 +5,7 @@ A tool to do some xor analysis:
 - guess the key length (based on count of equal chars)
 - guess the key (base on knowledge of most frequent char)
 
-**Notice:** xortool is now only running on Python 3. (And Update with `rye` project support and maximum support for Python 3.13+)
+**Notice:** xortool is now only running on Python 3. (And Update with `rye` project support and maximum support for Python 3.9-3.13+)
 
 ## Installation
 
