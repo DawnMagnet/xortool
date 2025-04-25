@@ -14,8 +14,8 @@ CHARSETS = {
 }
 
 PREDEFINED_CHARSETS = {
-    "base32":    CHARSETS["A"] + "234567=",
-    "base64":    CHARSETS["a"] + CHARSETS["A"] + CHARSETS["1"] + "/+=",
+    "base32": CHARSETS["A"] + "234567=",
+    "base64": CHARSETS["a"] + CHARSETS["A"] + CHARSETS["1"] + "/+=",
     "printable": CHARSETS["*"],
 }
 
