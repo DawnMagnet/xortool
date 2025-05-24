@@ -2,7 +2,7 @@
 name = "xortool"
 version = "1.1.0"
 description = "A tool to analyze multi-byte xor cipher"
-authors = [{ name = "DawnMagnet", email = "axccjqh@qq.com" }]
+authors = [{ name = "hellman", email = "hellman@mathstodon.xyz" }]
 license = "MIT"
 readme = "README.md"
 keywords = ["xor", "xortool", "cryptanalysis"]
@@ -12,10 +12,7 @@ classifiers = [
     'Topic :: Security :: Cryptography',
 ]
 requires-python = ">=3.6,<4.0"
-dependencies = [
-    "typer>=0.15.2",
-    "rich>=14.0.0",
-]
+dependencies = ["typer>=0.15.2", "rich>=14.0.0"]
 
 [project.scripts]
 xortool = 'xortool.tool_main:main'
